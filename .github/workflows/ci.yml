@@ -10,9 +10,43 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "TODO: implement lint job"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run ruff check
+        run: uv run ruff check src/ bin/
+
+      - name: Run ruff format check
+        run: uv run ruff format --check src/ bin/
+
 
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "TODO: implement test job"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run pytest
+        run: uv run pytest tests/ -v
